@@ -14,7 +14,135 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      dataset_comparisons: {
+        Row: {
+          ai_recommendations: Json | null
+          analysis_date: string
+          correlation_patterns: Json | null
+          created_at: string
+          id: string
+          performance_difference_analysis: Json | null
+          set_a_avg_engagement: number | null
+          set_a_avg_sentiment: number | null
+          set_a_conversion_rate: number | null
+          set_a_total_calls: number
+          set_b_avg_engagement: number | null
+          set_b_avg_sentiment: number | null
+          set_b_conversion_rate: number | null
+          set_b_total_calls: number
+          statistical_significance: Json | null
+        }
+        Insert: {
+          ai_recommendations?: Json | null
+          analysis_date?: string
+          correlation_patterns?: Json | null
+          created_at?: string
+          id?: string
+          performance_difference_analysis?: Json | null
+          set_a_avg_engagement?: number | null
+          set_a_avg_sentiment?: number | null
+          set_a_conversion_rate?: number | null
+          set_a_total_calls: number
+          set_b_avg_engagement?: number | null
+          set_b_avg_sentiment?: number | null
+          set_b_conversion_rate?: number | null
+          set_b_total_calls: number
+          statistical_significance?: Json | null
+        }
+        Update: {
+          ai_recommendations?: Json | null
+          analysis_date?: string
+          correlation_patterns?: Json | null
+          created_at?: string
+          id?: string
+          performance_difference_analysis?: Json | null
+          set_a_avg_engagement?: number | null
+          set_a_avg_sentiment?: number | null
+          set_a_conversion_rate?: number | null
+          set_a_total_calls?: number
+          set_b_avg_engagement?: number | null
+          set_b_avg_sentiment?: number | null
+          set_b_conversion_rate?: number | null
+          set_b_total_calls?: number
+          statistical_significance?: Json | null
+        }
+        Relationships: []
+      }
+      sales_calls: {
+        Row: {
+          analyzed_at: string | null
+          conversion_likelihood:
+            | Database["public"]["Enums"]["conversion_likelihood"]
+            | null
+          conversion_score: number | null
+          created_at: string
+          customer_demographics: Json | null
+          customer_talk_ratio: number | null
+          dataset_type: Database["public"]["Enums"]["dataset_type"]
+          engagement_score: number | null
+          filename: string
+          id: string
+          improvement_suggestions: Json | null
+          key_insights: Json | null
+          sales_rep_performance: Json | null
+          sales_rep_talk_ratio: number | null
+          sentiment_score: number | null
+          statistical_data: Json | null
+          total_duration_minutes: number | null
+          transcript_content: string
+          updated_at: string
+          uploaded_at: string
+        }
+        Insert: {
+          analyzed_at?: string | null
+          conversion_likelihood?:
+            | Database["public"]["Enums"]["conversion_likelihood"]
+            | null
+          conversion_score?: number | null
+          created_at?: string
+          customer_demographics?: Json | null
+          customer_talk_ratio?: number | null
+          dataset_type: Database["public"]["Enums"]["dataset_type"]
+          engagement_score?: number | null
+          filename: string
+          id?: string
+          improvement_suggestions?: Json | null
+          key_insights?: Json | null
+          sales_rep_performance?: Json | null
+          sales_rep_talk_ratio?: number | null
+          sentiment_score?: number | null
+          statistical_data?: Json | null
+          total_duration_minutes?: number | null
+          transcript_content: string
+          updated_at?: string
+          uploaded_at?: string
+        }
+        Update: {
+          analyzed_at?: string | null
+          conversion_likelihood?:
+            | Database["public"]["Enums"]["conversion_likelihood"]
+            | null
+          conversion_score?: number | null
+          created_at?: string
+          customer_demographics?: Json | null
+          customer_talk_ratio?: number | null
+          dataset_type?: Database["public"]["Enums"]["dataset_type"]
+          engagement_score?: number | null
+          filename?: string
+          id?: string
+          improvement_suggestions?: Json | null
+          key_insights?: Json | null
+          sales_rep_performance?: Json | null
+          sales_rep_talk_ratio?: number | null
+          sentiment_score?: number | null
+          statistical_data?: Json | null
+          total_duration_minutes?: number | null
+          transcript_content?: string
+          updated_at?: string
+          uploaded_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +151,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      conversion_likelihood: "high" | "medium" | "low"
+      dataset_type: "set_a" | "set_b"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +279,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      conversion_likelihood: ["high", "medium", "low"],
+      dataset_type: ["set_a", "set_b"],
+    },
   },
 } as const
