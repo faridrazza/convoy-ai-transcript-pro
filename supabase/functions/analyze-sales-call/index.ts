@@ -12,7 +12,7 @@ interface AnalysisRequest {
   datasetType: 'set_a' | 'set_b';
 }
 
-const OPENAI_ROUTER_API_KEY = Deno.env.get('OPENAI_ROUTER_API_KEY');
+const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -21,8 +21,8 @@ serve(async (req) => {
 
   try {
     // Check if API key is available
-    if (!OPENAI_ROUTER_API_KEY) {
-      throw new Error('OPENAI_ROUTER_API_KEY is not configured');
+    if (!OPENAI_API_KEY) {
+      throw new Error('OPENAI_API_KEY is not configured');
     }
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -106,17 +106,15 @@ serve(async (req) => {
     Provide specific, actionable insights that can help improve conversion rates.
     `;
 
-    // Call OpenAI Router API
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    // Call OpenAI API for analysis
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${OPENAI_ROUTER_API_KEY}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://sales-call-analyzer.com',
-        'X-Title': 'Sales Call Analyzer'
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'anthropic/claude-3.5-sonnet',
+        model: 'gpt-4o-mini',
         messages: [
           {
             role: 'user',
@@ -130,14 +128,14 @@ serve(async (req) => {
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('OpenAI Router API Error:', {
+      console.error('OpenAI API Error:', {
         status: response.status,
         statusText: response.statusText,
         error: errorText,
-        hasApiKey: !!OPENAI_ROUTER_API_KEY,
-        apiKeyLength: OPENAI_ROUTER_API_KEY?.length || 0
+        hasApiKey: !!OPENAI_API_KEY,
+        apiKeyLength: OPENAI_API_KEY?.length || 0
       });
-      throw new Error(`OpenAI Router API error: ${response.status} ${response.statusText} - ${errorText}`);
+      throw new Error(`OpenAI API error: ${response.status} ${response.statusText} - ${errorText}`);
     }
 
     const aiResponse = await response.json();
