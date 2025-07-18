@@ -14,6 +14,10 @@ serve(async (req) => {
   }
 
   try {
+    // Check if API key is available
+    if (!OPENAI_ROUTER_API_KEY) {
+      throw new Error('OPENAI_ROUTER_API_KEY is not configured');
+    }
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_ANON_KEY') ?? ''
@@ -208,7 +212,15 @@ serve(async (req) => {
     });
 
     if (!response.ok) {
-      throw new Error(`OpenAI Router API error: ${response.statusText}`);
+      const errorText = await response.text();
+      console.error('OpenAI Router API Error:', {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorText,
+        hasApiKey: !!OPENAI_ROUTER_API_KEY,
+        apiKeyLength: OPENAI_ROUTER_API_KEY?.length || 0
+      });
+      throw new Error(`OpenAI Router API error: ${response.status} ${response.statusText} - ${errorText}`);
     }
 
     const aiResponse = await response.json();
